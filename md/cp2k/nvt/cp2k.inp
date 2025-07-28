@@ -1,0 +1,158 @@
+&FORCE_EVAL
+   METHOD Quickstep
+   STRESS_TENSOR ANALYTICAL
+   &DFT
+      BASIS_SET_FILE_NAME BASIS_MOLOPT
+      POTENTIAL_FILE_NAME POTENTIAL
+      UNRESTRICTED_KOHN_SHAM ON
+      &QS
+        EPS_DEFAULT 1.0E-12
+        EXTRAPOLATION ASPC
+        EXTRAPOLATION_ORDER 4
+      &END 
+      &SCF
+         EPS_SCF 1.0E-6
+         MAX_SCF 30
+         SCF_GUESS RESTART
+         &OUTER_SCF .TRUE.
+            EPS_SCF 1.0E-6
+            MAX_SCF 50
+         &END OUTER_SCF
+         &OT .TRUE.
+            MINIMIZER DIIS
+            ALGORITHM IRAC
+            N_HISTORY_VEC 8
+            PRECONDITIONER FULL_KINETIC
+         &END OT 
+      &END SCF
+      &XC
+         &XC_GRID
+            XC_DERIV NN10_SMOOTH
+            XC_SMOOTH_RHO NN10
+         &END XC_GRID
+         &VDW_POTENTIAL
+            POTENTIAL_TYPE PAIR_POTENTIAL
+            &PAIR_POTENTIAL
+               TYPE DFTD3(BJ)
+               REFERENCE_FUNCTIONAL PBE
+               VERBOSE_OUTPUT .TRUE.
+               R_CUTOFF 10.0
+               CALCULATE_C9_TERM .TRUE.
+               PARAMETER_FILE_NAME dftd3.dat
+            &END PAIR_POTENTIAL
+            &NON_LOCAL
+               TYPE RVV10
+               VERBOSE_OUTPUT .TRUE.
+               KERNEL_FILE_NAME rVV10_kernel_table.dat
+            &END NON_LOCAL
+         &END VDW_POTENTIAL
+         &XC_FUNCTIONAL
+            &GGA_X_PBE
+            &END GGA_X_PBE
+            &GGA_C_PBE
+            &END GGA_C_PBE
+         &END XC_FUNCTIONAL
+      &END XC      
+      &MGRID
+         CUTOFF 600
+         REL_CUTOFF 60
+         NGRIDS 5
+      &END MGRID
+      &PRINT
+        &VORONOI ON
+            APPEND .TRUE.
+        &END VORONOI
+      &END PRINT
+   &END DFT
+   &PRINT
+      &STRESS_TENSOR ON
+      &END STRESS_TENSOR
+   &END PRINT
+   &SUBSYS
+      &TOPOLOGY
+          CONN_FILE_FORMAT OFF
+          COORD_FILE_FORMAT XYZ
+          COORD_FILE_NAME start.xyz
+      &END TOPOLOGY
+      &CELL
+         PERIODIC XYZ
+         CELL_FILE_FORMAT CIF
+         CELL_FILE_NAME start.cif
+         &CELL_REF
+            PERIODIC XYZ
+            CELL_FILE_FORMAT CIF
+            CELL_FILE_NAME start.cif
+         &END CELL_REF
+     &END CELL
+      &KIND Sn
+         BASIS_SET DZVP-MOLOPT-SR-GTH
+         POTENTIAL GTH-PBE-q4
+      &END KIND
+      &KIND Al
+         BASIS_SET DZVP-MOLOPT-SR-GTH
+         POTENTIAL GTH-PBE-q3
+      &END KIND
+      &KIND Si
+         BASIS_SET DZVP-MOLOPT-SR-GTH
+         POTENTIAL GTH-PBE-q4
+      &END KIND
+      &KIND O
+         BASIS_SET DZVP-MOLOPT-SR-GTH
+         POTENTIAL GTH-PBE-q6
+      &END KIND
+      &KIND H
+         BASIS_SET DZVP-MOLOPT-SR-GTH
+         POTENTIAL GTH-PBE-q1
+      &END KIND
+      &KIND C
+         BASIS_SET DZVP-MOLOPT-SR-GTH
+         POTENTIAL GTH-PBE-q4
+      &END KIND
+   &END SUBSYS
+&END FORCE_EVAL
+&MOTION
+    &GEO_OPT
+        TYPE MINIMIZATION
+        MAX_DR    1.0E-03
+        MAX_FORCE 1.0E-03
+        RMS_DR    1.0E-03
+        RMS_FORCE 1.0E-03
+        MAX_ITER 200
+        OPTIMIZER LBFGS
+    &LBFGS
+    &END
+    &END GEO_OPT
+    &MD
+        STEPS 10000
+        TIMESTEP 0.5
+        ENSEMBLE NVT
+        TEMPERATURE 1000 
+        &THERMOSTAT
+            REGION GLOBAL
+            TYPE NOSE
+            &NOSE
+                    TIMECON [fs] 50
+            &END
+        &END THERMOSTAT
+        &BAROSTAT
+            PRESSURE [bar] 1.0
+            TIMECON [fs] 500
+        &END
+    &END
+    &PRINT
+        &VELOCITIES
+        &END
+        &STRESS
+        &END
+        &FORCES
+        &END
+        &CELL
+        &END
+    &END
+&END 
+
+&GLOBAL
+   PROJECT cp2k-md
+   PRINT_LEVEL LOW
+   RUN_TYPE MD
+&END GLOBAL
