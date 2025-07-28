@@ -1,0 +1,24 @@
+<ForceField>
+    <AtomTypes>
+        <!--XML units: kJ/mol for energies, nm for lengths, and radians for angles.-->
+        <!--For conversion from K to kJ/mol, we use: 1.38064852E-23*6.022140857E23/1000.-->
+        <!--For conversion from kcal/mol to kJ/mol, we use: 4.184-->
+        <!--We have to supply bond constants as a placeholder, but TIP4P/Ew should ALWAYS be treated as a riged model-->
+     <Type name="tip4pew_o" class="OW" element="O" mass="15.9994" def="O" desc="TIP4P/Ew oxygen" doi="10.1063/1.1683075"/>
+     <Type name="tip4pew_h" class="HW" element="H" mass="1.008" def="H" desc="TIP4P/Ew hydrogen" doi="10.1063/1.1683075"/>
+     <Type name="tip4pew_m" class="M" element="_M" mass="0.0" def="_M" desc="TIP4P/Ew Ghost atom" doi="10.1063/1.1683075"/>
+ </AtomTypes>
+ <HarmonicBondForce>
+  <Bond class1="OW" class2="HW" length="0.09572" k="502416.0"/>
+  <Bond class1="OW" class2="M" length="0.01250" k="502416.0"/>
+ </HarmonicBondForce>
+ <HarmonicAngleForce>
+  <Angle class1="HW" class2="OW" class3="HW" angle="1.8242181341844732" k="383.0"/>
+  <Angle class1="HW" class2="OW" class3="M" angle="0.9121090670922366" k="383.0"/>
+ </HarmonicAngleForce>
+ <NonbondedForce coulomb14scale="0.5" lj14scale="0.5">
+     <Atom type="tip4pew_o" charge="0.0" sigma="0.316435" epsilon="0.680946"/>
+     <Atom type="tip4pew_h" charge="0.52422" sigma="0.0" epsilon="0.0"/>
+     <Atom type="tip4pew_m" charge="-1.04844" sigma="0.0" epsilon="0.0"/>
+ </NonbondedForce>
+</ForceField>
