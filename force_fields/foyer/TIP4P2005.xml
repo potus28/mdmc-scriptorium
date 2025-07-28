@@ -1,0 +1,20 @@
+<ForceField>
+	<AtomTypes>
+		<Type name="TIP4P2005_O" class="O" element="O" mass="15.999" def="[O;X3](H)(H)[_M]" desc="TIP4P 20005 O" doi="https://doi.org/10.1063/1.2121687"/>  
+		<Type name="TIP4P2005_H" class="H" element="H" mass="1.00784" def="[H;X1]O" desc="TIP4P 2005 H" doi="https://doi.org/10.1063/1.2121687"/>  
+		<Type name="TIP4P2005_M" class="M" element="_M" mass="0.00000" def="[_M;X1]O" desc="TIP4P 2005 Ghost Particle" doi="https://doi.org/10.1063/1.2121687"/>  
+	</AtomTypes>
+<HarmonicBondForce>
+	<Bond class1="O" class2="H" length="0.09572" k="10000000"/>
+	<Bond class1="O" class2="M" length="0.01546" k="10000000"/>
+</HarmonicBondForce>
+<HarmonicAngleForce>
+	<Angle class1="H" class2="O" class3="H" angle="1.8242181341844732" k="1000000"/>
+	<Angle class1="H" class2="O" class3="M" angle="0.9121090670922366" k="1000000"/>
+</HarmonicAngleForce>
+<NonbondedForce coulomb14scale="0.0" lj14scale="0.0">
+    <Atom type="TIP4P2005_O" charge="0.0" sigma="0.31589" epsilon="0.7749076590870078"/>
+	<Atom type="TIP4P2005_H" charge="0.5564" sigma="0.0" epsilon="0.0"/>
+	<Atom type="TIP4P2005_M" charge="-1.1128" sigma="0.0" epsilon="0.0"/>
+</NonbondedForce>
+</ForceField>
